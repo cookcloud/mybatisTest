@@ -15,6 +15,8 @@
     -->
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--对于写入数据库的值为null时，避免不同数据库对null的认可程度不一样-->
+        <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
     <!--
     3、typeAliases别名处理器，主要是针对javaBean进行起别名,别名不区分大小写===》一般还是写全类名方式，不用别名

@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MybatisTest {
 
@@ -122,13 +124,45 @@ public class MybatisTest {
     public void deleteTest6() throws Exception {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
 //     获取到Sqlsession是不会自动提交数据的
+        SqlSession session = sqlSessionFactory.openSession(true);
+        try {
+            EmployeeMapper employeeMapper = session.getMapper(EmployeeMapper.class);
+            Boolean result = employeeMapper.deleteEmployee(1);
+            System.out.println(result);
+//            上面在openSession（true），就不需要手动提交了
+//            session.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+
+    public void selectMultipleTest7() throws Exception {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
         SqlSession session = sqlSessionFactory.openSession();
         try {
             EmployeeMapper employeeMapper = session.getMapper(EmployeeMapper.class);
-            Boolean result = employeeMapper.deleteEmploy(1);
-            System.out.println(result);
-//            需要自己手动提交
-            session.commit();
+            Employee employee = employeeMapper.getEmployeeByIdAndLastName(1, "tom");
+            System.out.println(employee);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void getMapTest8() throws Exception {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapper employeeMapper = session.getMapper(EmployeeMapper.class);
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", 1);
+            map.put("lastName","tom");
+            Employee employee = employeeMapper.getEmployeeByMap(map);
+            System.out.println(employee);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
