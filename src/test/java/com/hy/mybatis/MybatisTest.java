@@ -2,6 +2,7 @@ package com.hy.mybatis;
 
 import mapper.EmployeeMapper;
 import mapper.EmployeeMapperAnnotation;
+import mapper.EmployeeMapperPlus;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MybatisTest {
@@ -103,6 +105,7 @@ public class MybatisTest {
         }
     }
 
+    @Test
     public void updateTest5() throws Exception {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
 //     获取到Sqlsession是不会自动提交数据的
@@ -121,6 +124,7 @@ public class MybatisTest {
         }
     }
 
+    @Test
     public void deleteTest6() throws Exception {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
 //     获取到Sqlsession是不会自动提交数据的
@@ -138,7 +142,7 @@ public class MybatisTest {
         }
     }
 
-
+    @Test
     public void selectMultipleTest7() throws Exception {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
         SqlSession session = sqlSessionFactory.openSession();
@@ -153,6 +157,7 @@ public class MybatisTest {
         }
     }
 
+    @Test
     public void getMapTest8() throws Exception {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
         SqlSession session = sqlSessionFactory.openSession();
@@ -160,7 +165,7 @@ public class MybatisTest {
             EmployeeMapper employeeMapper = session.getMapper(EmployeeMapper.class);
             Map<String, Object> map = new HashMap<>();
             map.put("id", 1);
-            map.put("lastName","tom");
+            map.put("lastName", "tom");
             Employee employee = employeeMapper.getEmployeeByMap(map);
             System.out.println(employee);
         } catch (Exception e) {
@@ -169,4 +174,59 @@ public class MybatisTest {
             session.close();
         }
     }
+
+    //返回list
+    @Test
+    public void getListTest9() throws Exception {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapper employeeMapper = session.getMapper(EmployeeMapper.class);
+            List<Employee> employeelist = employeeMapper.getEmployeeByLastNameReturnList("tom");
+            System.out.println("list总数=====》" + employeelist.size());
+            for (Employee e : employeelist) {
+                System.out.println(e.toString());
+            }
+            System.out.println(employeelist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Test
+    public void testReturnuCustomMap() throws IOException {
+        SqlSessionFactory sessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sessionFactory.openSession();
+        try {
+            EmployeeMapperPlus employeePlus = sqlSession.getMapper(EmployeeMapperPlus.class);
+            Employee result= employeePlus.getEmpById(1);
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+
+    @Test
+    public void testByStepMap() throws IOException {
+        SqlSessionFactory sessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sessionFactory.openSession();
+        try {
+            EmployeeMapperPlus employeePlus = sqlSession.getMapper(EmployeeMapperPlus.class);
+            Employee employee= employeePlus.getEmpByIdStep(1);
+            System.out.println(employee);//打印员工信息
+            System.out.println(employee.getDept());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+
 }

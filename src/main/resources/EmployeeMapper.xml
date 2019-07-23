@@ -69,9 +69,14 @@
     </select>
 
 
-    <!--resultType：如果返回的是一个集合，要写集合中元素的类型  -->
+    <!--resultType：如果返回的是一个map,里面包含多个键值对，值是employee对象，这里键要指定对象属性中的一个键来充当，在接口中写明，要写集合中元素的类型  -->
     <select id="getEmpByLastNameLikeReturnMap" resultType="com.hy.mybatis.Employee">
         select * from employee where last_name like #{lastName}
+    </select>
+
+    <!--返回list-->
+    <select id="getEmployeeByLastNameReturnList"  resultType="com.hy.mybatis.Employee">
+        SELECT  * FROM  employee WHERE  last_name like concat("%",#{lastName},"%")
     </select>
 
 
