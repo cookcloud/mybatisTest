@@ -50,7 +50,7 @@
 								|JNDI(JndiDataSourceFactory)
 					自定义数据源：实现DataSourceFactory接口，type是全类名
     -->
-    <environments default="development">
+    <environments default="development">    <!--通过default=“dev-Oracle”将数据库切换到oracle，这里的环境就是切换数据库的-->
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
