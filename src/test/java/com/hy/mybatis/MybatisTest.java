@@ -38,7 +38,7 @@ public class MybatisTest {
      * @Version:
      */
 
-    public SqlSessionFactory getSqlSessionFactory() throws IOException {
+    public static SqlSessionFactory getSqlSessionFactory() throws IOException {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         return new SqlSessionFactoryBuilder().build(inputStream);
