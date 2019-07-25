@@ -1,7 +1,11 @@
 package com.hy.mybatis;
 
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable {
+
+    private static  final long serialVersionUID=1l;
     private Integer id;
     private String  lastName;
     private String   email;

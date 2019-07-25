@@ -18,9 +18,13 @@
         <!--对于写入数据库的值为null时，避免不同数据库对null的认可程度不一样-->
         <setting name="jdbcTypeForNull" value="NULL"/>
         
-        <!---->
+        <!--开启延时加载-->
         <setting name="lazyLoadingEnabled" value="true"/>
         <setting name="aggressiveLazyLoading" value="true"/>
+
+        <!--全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存-->
+        <setting name="cacheEnabled" value="true"/>
+        
         
     </settings>
     <!--

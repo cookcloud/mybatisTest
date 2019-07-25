@@ -1,5 +1,14 @@
 package com.hy.mybatis;
 
+import mapper.DepartmentMapper;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static com.hy.mybatis.MybatisTest.getSqlSessionFactory;
+
 public class CacheTest {
 
 
@@ -53,4 +62,44 @@ public class CacheTest {
      * @throws IOException
      *
      */
+
+    @Test
+    public void testSecondLevelCache02() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        SqlSession openSession2 = sqlSessionFactory.openSession();
+        try{
+            //1、
+            DepartmentMapper mapper = openSession.getMapper(DepartmentMapper.class);
+            DepartmentMapper mapper2 = openSession2.getMapper(DepartmentMapper.class);
+
+            Department deptById = mapper.getDeptById(1);
+            System.out.println(deptById);
+            openSession.close();
+
+            Department deptById2 = mapper2.getDeptById(1);
+            System.out.println(deptById2);
+            openSession2.close();
+            //第二次查询是从二级缓存中拿到的数据，并没有发送新的sql
+
+            //注意，数据默认是放在一级缓存中的，开启二级缓存是指一级缓存关闭后然后会将数据缓存到二级缓存中，所以效果是将一级缓存关闭
+
+           //以下这样写还是会查询两次的，因为第二次查询时，第一次缓存的数据还是在一级缓存中，没有关闭一级缓存会话
+            //只有sqlsession级别的一级缓存关闭后，数据才会在mapper级别的二级缓存中使用
+            /*
+            openSession.close();
+            openSession2.close();*/
+
+
+        }finally{
+
+        }
+    }
+
+
+
+
+
+
+
 }
