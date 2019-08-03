@@ -3,6 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+    <!--
+    注意：mybatis中的配置文件中的标签顺序
+    plugins在配置文件中的位置必须符合要求，否则会报错，顺序如下:
+    properties?, settings?,
+    typeAliases?, typeHandlers?,
+    objectFactory?,objectWrapperFactory?,
+    plugins?,
+    environments?, databaseIdProvider?, mappers?
+    -->
+
+
     <!--
     1、mybatis可以使用properties来引入外部properties配置文件的内容；
     resource：引入类路径下的资源
@@ -17,15 +29,15 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
         <!--对于写入数据库的值为null时，避免不同数据库对null的认可程度不一样-->
         <setting name="jdbcTypeForNull" value="NULL"/>
-        
+
         <!--开启延时加载-->
         <setting name="lazyLoadingEnabled" value="true"/>
         <setting name="aggressiveLazyLoading" value="true"/>
 
         <!--全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存-->
         <setting name="cacheEnabled" value="true"/>
-        
-        
+
+
     </settings>
     <!--
     3、typeAliases别名处理器，主要是针对javaBean进行起别名,别名不区分大小写===》一般还是写全类名方式，不用别名
@@ -54,6 +66,18 @@
 								|JNDI(JndiDataSourceFactory)
 					自定义数据源：实现DataSourceFactory接口，type是全类名
     -->
+
+
+    <!--plugins：注册自定义的插件  -->
+    <plugins>
+        <plugin interceptor="com.hy.mybatis.MyFirstPlugin">
+            <property name="username" value="root"/>
+            <property name="password" value="123456"/>
+        </plugin>
+        <plugin interceptor="com.hy.mybatis.MySecondPlugin"></plugin>
+    </plugins>
+
+
     <environments default="development">    <!--通过default=“dev-Oracle”将数据库切换到oracle，这里的环境就是切换数据库的-->
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -108,7 +132,7 @@
 
 
     <!-- 批量注册：sqlxml配置文件必须和接口放在同一路径下，而且必须同名 -->
-   <!-- <package name="mapper"/>-->
+    <!-- <package name="mapper"/>-->
 
 
 </configuration>
