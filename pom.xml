@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.4.1</version>
+            <version>3.5.6</version>
         </dependency>
 
         <!--mybatis整合第三方的cache缓存，实现分布式缓存的ehcache包、依赖日志包、与mybatis整合的包  -->
